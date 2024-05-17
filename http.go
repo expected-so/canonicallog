@@ -1,8 +1,11 @@
 package canonicallog
 
 import (
+	"bufio"
 	"context"
+	"errors"
 	"log/slog"
+	"net"
 	"net/http"
 	"time"
 )
@@ -12,9 +15,19 @@ type responseWriter struct {
 	statusCode int
 }
 
+var _ http.Hijacker = (*responseWriter)(nil)
+
 func (w *responseWriter) WriteHeader(statusCode int) {
 	w.statusCode = statusCode
 	w.ResponseWriter.WriteHeader(statusCode)
+}
+
+func (w *responseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	h, ok := w.ResponseWriter.(http.Hijacker)
+	if !ok {
+		return nil, nil, errors.New("hijack not supported")
+	}
+	return h.Hijack()
 }
 
 func LogHttpRequest(ctx context.Context, method string) {
