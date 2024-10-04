@@ -55,6 +55,6 @@ func HttpHandler(handler http.Handler) http.Handler {
 
 		LogHttpStatusCode(logContext, res.statusCode)
 		LogDuration(logContext, time.Now().Sub(startAt))
-		PrintLine(logContext, slog.LevelInfo, "http-request")
+		PrintLine(logContext, "http-request")
 	})
 }

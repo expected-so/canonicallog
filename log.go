@@ -13,17 +13,21 @@ func NewLogLine(ctx context.Context) context.Context {
 	return context.WithValue(ctx, contextKey, attrs)
 }
 
-func PrintLine(ctx context.Context, level slog.Level, message string) {
+func PrintLine(ctx context.Context, message string) {
 	attrs, ok := ctx.Value(contextKey).(*[]slog.Attr)
 	if !ok || attrs == nil {
 		return
 	}
 
+	logLevel := slog.LevelInfo
 	logArgs := make([]any, len(*attrs))
 	for index, attr := range *attrs {
 		logArgs[index] = attr
+		if attr.Key == "error" {
+			logLevel = slog.LevelError
+		}
 	}
-	slog.Log(ctx, level, message, logArgs...)
+	slog.Log(ctx, logLevel, message, logArgs...)
 }
 
 func LogAttr(ctx context.Context, attr slog.Attr) {

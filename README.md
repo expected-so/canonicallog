@@ -5,7 +5,7 @@ A canonical logging solution for Go inspired from https://stripe.com/blog/canoni
 ## Install
 
 ```bash
-go get github.com/remicaumette/canonicallog
+go get github.com/expected-so/canonicallog
 ```
 
 ## HTTP
@@ -16,7 +16,7 @@ package main
 import (
     "net/http"
     "log/slog"
-    "github.com/remicaumette/canonicallog"
+    "github.com/expected-so/canonicallog"
 )
 
 func main()  {
