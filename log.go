@@ -28,10 +28,9 @@ func NewLogLine(ctx context.Context) context.Context {
 	})
 }
 
-func WithLogger(ctx context.Context, logger *slog.Logger) context.Context {
+func AttachLogger(ctx context.Context, logger *slog.Logger) {
 	lc := fromContext(ctx)
 	lc.logger = logger
-	return ctx
 }
 
 func PrintLine(ctx context.Context, message string) {

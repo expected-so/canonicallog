@@ -152,14 +152,15 @@ func TestHttpHandler(t *testing.T) {
 			capturedCtx = r.Context()
 
 			// Add handler-specific attributes
-			ctx := WithLogger(r.Context(), customLogger.With(
+
+			AttachLogger(capturedCtx, customLogger.With(
 				"handler", "test-handler",
 				"version", "v1",
 			))
 
 			// Add request-specific attributes
-			LogAttr(ctx, slog.String("request_id", "123"))
-			LogAttr(ctx, slog.String("user_id", "user_123"))
+			LogAttr(capturedCtx, slog.String("request_id", "123"))
+			LogAttr(capturedCtx, slog.String("user_id", "user_123"))
 
 			w.WriteHeader(http.StatusAccepted)
 		})

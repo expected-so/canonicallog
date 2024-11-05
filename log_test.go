@@ -56,7 +56,7 @@ func TestLogger(t *testing.T) {
 		logger, handler := newTestLogger()
 
 		ctx := NewLogLine(context.Background())
-		ctx = WithLogger(ctx, logger.With("custom", "value"))
+		AttachLogger(ctx, logger.With("custom", "value"))
 		LogAttr(ctx, slog.String("user_id", "123"))
 		PrintLine(ctx, "test message")
 
@@ -68,7 +68,7 @@ func TestLogger(t *testing.T) {
 		logger, handler := newTestLogger()
 
 		ctx := NewLogLine(context.Background())
-		ctx = WithLogger(ctx, logger)
+		AttachLogger(ctx, logger)
 		LogError(ctx, errors.New("test error"))
 		PrintLine(ctx, "error message")
 
@@ -80,7 +80,7 @@ func TestLogger(t *testing.T) {
 		logger, handler := newTestLogger()
 
 		ctx := NewLogLine(context.Background())
-		ctx = WithLogger(ctx, logger)
+		AttachLogger(ctx, logger)
 		duration := 100 * time.Millisecond
 		LogDuration(ctx, duration)
 		PrintLine(ctx, "duration test")
@@ -101,7 +101,7 @@ func TestLogger(t *testing.T) {
 		logger, handler := newTestLogger()
 
 		ctx := NewLogLine(context.Background())
-		ctx = WithLogger(ctx, logger)
+		AttachLogger(ctx, logger)
 		LogAttr(ctx, slog.String("key1", "value1"))
 		LogAttr(ctx, slog.String("key2", "value2"))
 		LogAttr(ctx, slog.String("key3", "value3"))
@@ -116,7 +116,7 @@ func TestLogger(t *testing.T) {
 		logger, handler := newTestLogger()
 
 		ctx := NewLogLine(context.Background())
-		ctx = WithLogger(ctx, logger)
+		AttachLogger(ctx, logger)
 		LogAttr(ctx, slog.String("persistent", "value"))
 
 		PrintLine(ctx, "first message")
