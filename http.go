@@ -17,6 +17,8 @@ type responseWriter struct {
 
 var _ http.Hijacker = (*responseWriter)(nil)
 
+var _ http.Flusher = (*responseWriter)(nil)
+
 func (w *responseWriter) WriteHeader(statusCode int) {
 	w.statusCode = statusCode
 	w.ResponseWriter.WriteHeader(statusCode)
@@ -28,6 +30,13 @@ func (w *responseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
 		return nil, nil, errors.New("hijack not supported")
 	}
 	return h.Hijack()
+}
+
+func (w *responseWriter) Flush() {
+	h, ok := w.ResponseWriter.(http.Flusher)
+	if ok {
+		h.Flush()
+	}
 }
 
 func LogHttpRequest(ctx context.Context, method string) {
